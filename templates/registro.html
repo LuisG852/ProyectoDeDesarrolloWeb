@@ -65,7 +65,7 @@
             z-index: 1;
             display: flex;
             width: 100%;
-            max-width:  900px;
+            max-width: 1100px;
             background: var(--white);
             border-radius: 20px;
             overflow: hidden;
@@ -215,8 +215,9 @@
         /* ========== FORMULARIO ========== */
         .auth-form {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
+            column-gap: 25px;
         }
 
         @keyframes slideInRight {
@@ -231,7 +232,7 @@
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 0;
             position: relative;
         }
 
@@ -255,7 +256,7 @@
             transform: translateY(-50%);
             color: var(--text-light);
             transition: color 0.3s;
-            z-index: 1;
+            pointer-events: none;
         }
 
         .form-group input {
@@ -277,10 +278,6 @@
             transform: translateY(-2px);
         }
 
-        .form-group input:focus ~ i {
-            color: var(--primary-color);
-        }
-
         /* Estados de validación */
         .form-group.error input {
             border-color: var(--error-color);
@@ -299,6 +296,7 @@
             transform: translateY(-50%);
             display: none;
             font-size: 18px;
+            pointer-events: none;
         }
 
         .form-group.success .validation-icon.success {
@@ -573,6 +571,14 @@
             }
         }
 
+        @media (max-width: 768px) {
+            /* En tablets, mantener 2 columnas pero con menos gap */
+            .auth-form {
+                gap: 15px;
+                column-gap: 20px;
+            }
+        }
+
         @media (max-width: 576px) {
             body {
                 padding: 0;
@@ -606,6 +612,11 @@
 
             .auth-header h1 {
                 font-size: 24px;
+            }
+
+            /* Formulario en 1 columna en móviles */
+            .auth-form {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -643,13 +654,18 @@
                 <p>Completa tus datos para registrarte</p>
             </div>
 
+            <div id="message" class="message"></div>
+
         <form class="auth-form" id="registerForm" novalidate>
             <div class="form-group">
                 <label for="usuario">Usuario</label>
                 <div class="input-wrapper">
                     <input type="text" id="usuario" name="usuario" placeholder="Elige un nombre de usuario" required minlength="3">
                     <i class="fas fa-user"></i>
+                    <i class="fas fa-check-circle validation-icon success"></i>
+                    <i class="fas fa-times-circle validation-icon error"></i>
                 </div>
+                <div class="error-message"></div>
             </div>
 
             <div class="form-group">
@@ -697,6 +713,15 @@
                 <div class="input-wrapper">
                     <input type="password" id="contrasena" name="contrasena" placeholder="Crea una contraseña segura" required minlength="4">
                     <i class="fas fa-lock"></i>
+                    <i class="fas fa-check-circle validation-icon success"></i>
+                    <i class="fas fa-times-circle validation-icon error"></i>
+                </div>
+                <div class="error-message"></div>
+                <div class="password-strength">
+                    <div class="strength-meter">
+                        <div class="strength-meter-fill"></div>
+                    </div>
+                    <div class="strength-text">Fortaleza de la contraseña</div>
                 </div>
             </div>
 
@@ -705,10 +730,16 @@
                 <div class="input-wrapper">
                     <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" placeholder="Confirma tu contraseña" required>
                     <i class="fas fa-lock"></i>
+                    <i class="fas fa-check-circle validation-icon success"></i>
+                    <i class="fas fa-times-circle validation-icon error"></i>
                 </div>
+                <div class="error-message"></div>
             </div>
 
-            <button type="submit" class="btn-submit">Crear Cuenta</button>
+            <button type="submit" class="btn-submit">
+                <span>Crear Cuenta</span>
+                <div class="spinner"></div>
+            </button>
         </form>
 
 
@@ -727,7 +758,7 @@
         const confirmarInput = document.getElementById('confirmar_contrasena');
         const btnSubmit = registerForm.querySelector('.btn-submit');
         const messageDiv = document.getElementById('message');
-        const passwordStrength = contrasenaInput.parentElement.parentElement.querySelector('.password-strength');
+        const passwordStrength = document.querySelector('.password-strength');
         const strengthMeterFill = passwordStrength.querySelector('.strength-meter-fill');
         const strengthText = passwordStrength.querySelector('.strength-text');
 
@@ -756,11 +787,23 @@
         const inputs = document.querySelectorAll('.form-group input');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
+                // Cambiar color del label
                 this.parentElement.parentElement.querySelector('label').style.color = 'var(--primary-color)';
+                // Cambiar color del icono
+                const icon = this.parentElement.querySelector('i');
+                if (icon) {
+                    icon.style.color = 'var(--primary-color)';
+                }
             });
 
             input.addEventListener('blur', function() {
+                // Restaurar color del label
                 this.parentElement.parentElement.querySelector('label').style.color = 'var(--text-dark)';
+                // Restaurar color del icono
+                const icon = this.parentElement.querySelector('i');
+                if (icon) {
+                    icon.style.color = 'var(--text-light)';
+                }
             });
         });
 
@@ -905,8 +948,13 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        usuario: usuarioInput.value,
-                        contrasena: contrasenaInput.value
+                        usuario: document.getElementById('usuario').value,
+                        contrasena: contrasenaInput.value,
+                        nombre: document.getElementById('nombre').value,
+                        email: document.getElementById('email').value || null,
+                        telefono: document.getElementById('telefono').value || null,
+                        nit: document.getElementById('nit').value || null,
+                        direccion: document.getElementById('direccion').value || null
                     })
                 });
 
