@@ -624,7 +624,7 @@ def admin_estadisticas():
         total_facturas = cursor.fetchone()[0]
         
         # Total de clientes
-        cursor.execute("SELECT COUNT(*) FROM cliente")
+        cursor.execute("SELECT COUNT(*) FROM usuario WHERE rol = 'cliente'")
         total_clientes = cursor.fetchone()[0]
         
         return jsonify({
@@ -922,9 +922,9 @@ def admin_get_facturas():
                 v.fecha,
                 v.total,
                 v.metodo_pago,
-                c.nombre as cliente
+                u.nombre as cliente
             FROM venta v
-            LEFT JOIN cliente c ON v.id_cliente = c.id_cliente
+            LEFT JOIN usuario u ON v.usuario_id = u.id_usuario
             ORDER BY v.fecha DESC
         """)
         
