@@ -278,6 +278,215 @@
         .social-btn:active {
             animation: pulse 0.3s ease;
         }
+
+        /* ========== BOTÓN DE CONTACTO ========== */
+        .contact-button {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--white);
+            transition: all 0.3s ease;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-button:hover {
+            background: var(--white);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-button i {
+            font-size: 16px;
+        }
+
+        /* ========== MODAL DE CONTACTO ========== */
+        .contact-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .contact-modal.active {
+            display: flex;
+        }
+
+        .contact-modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.4s ease;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .contact-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-modal-title i {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        .contact-modal-close {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .contact-modal-close:hover {
+            color: var(--error-color);
+            background: rgba(239, 68, 68, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .form-group label .required {
+            color: var(--error-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--bg-light);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .contact-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .contact-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .contact-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-message {
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .form-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+            display: block;
+        }
+
+        .form-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+
         /* ========== CONTENEDOR PRINCIPAL ========== */
         .main-container {
             max-width: 1400px;
@@ -920,6 +1129,13 @@
                         <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>
+                
+                <!-- Botón de Contacto -->
+                <button class="contact-button" onclick="openContactModal()" title="Contáctanos">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contacto</span>
+                </button>
+                
                 <div class="user-info">
                     <div class="user-avatar">
                         <i class="fas fa-user"></i>
@@ -972,6 +1188,80 @@
 
     <!-- ========== OVERLAY ========== -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- ========== MODAL DE CONTACTO ========== -->
+    <div class="contact-modal" id="contactModal">
+        <div class="contact-modal-content">
+            <div class="contact-modal-header">
+                <div class="contact-modal-title">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contáctanos</span>
+                </div>
+                <button class="contact-modal-close" onclick="closeContactModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="contactFormMessage" class="form-message"></div>
+
+            <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+                <div class="form-group">
+                    <label for="contactNombre">
+                        Nombre <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="contactNombre" 
+                        name="nombre" 
+                        placeholder="Tu nombre completo"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contactEmail">
+                        Email <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="contactEmail" 
+                        name="email" 
+                        placeholder="tucorreo@ejemplo.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contactTelefono">
+                        Teléfono
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="contactTelefono" 
+                        name="telefono" 
+                        placeholder="+502 1234-5678"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contactMensaje">
+                        Mensaje <span class="required">*</span>
+                    </label>
+                    <textarea 
+                        id="contactMensaje" 
+                        name="mensaje" 
+                        placeholder="Escribe tu mensaje aquí..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="contact-submit-btn" id="contactSubmitBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Enviar Mensaje</span>
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- ========== SIDEBAR DEL CARRITO ========== -->
     <div class="cart-sidebar" id="cartSidebar">
@@ -1228,7 +1518,86 @@
                 .then(() => window.location.href = '/login-page')
                 .catch(() => window.location.href = '/login-page');
         }
+
+        // ========== FUNCIONES DE CONTACTO ==========
+        function openContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Limpiar formulario
+            document.getElementById('contactForm').reset();
+            document.getElementById('contactFormMessage').className = 'form-message';
+        }
+
+        async function submitContactForm(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('contactSubmitBtn');
+            const messageDiv = document.getElementById('contactFormMessage');
+            
+            // Deshabilitar botón
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Enviando...</span>';
+            
+            // Limpiar mensajes anteriores
+            messageDiv.className = 'form-message';
+            
+            const formData = {
+                nombre: document.getElementById('contactNombre').value,
+                email: document.getElementById('contactEmail').value,
+                telefono: document.getElementById('contactTelefono').value,
+                mensaje: document.getElementById('contactMensaje').value
+            };
+            
+            try {
+                const response = await fetch('/contacto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.className = 'form-message success';
+                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                    
+                    // Limpiar formulario
+                    document.getElementById('contactForm').reset();
+                    
+                    // Cerrar modal después de 3 segundos
+                    setTimeout(() => {
+                        closeContactModal();
+                    }, 3000);
+                } else {
+                    messageDiv.className = 'form-message error';
+                    messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+                }
+            } catch (error) {
+                messageDiv.className = 'form-message error';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error al enviar el mensaje. Por favor, intenta de nuevo.';
+            } finally {
+                // Rehabilitar botón
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Enviar Mensaje</span>';
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
     </script>
 </body>
 </html>
-
