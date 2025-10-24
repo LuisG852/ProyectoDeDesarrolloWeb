@@ -975,6 +975,135 @@ def admin_get_facturas():
 
 
 # ========================================
+# ENDPOINTS DE CONTACTO
+# ========================================
+
+@app.route('/contacto', methods=['POST'])
+def enviar_contacto():
+    """Endpoint para enviar formulario de contacto"""
+    try:
+        data = request.get_json()
+        nombre = data.get('nombre')
+        email = data.get('email')
+        telefono = data.get('telefono', '')
+        mensaje = data.get('mensaje')
+        
+        if not nombre or not email or not mensaje:
+            return jsonify({
+                'success': False,
+                'message': 'Nombre, email y mensaje son requeridos'
+            }), 400
+        
+        cursor = db.session.connection().connection.cursor()
+        
+        cursor.execute("""
+            INSERT INTO contacto (nombre, email, telefono, mensaje)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id_contacto
+        """, (nombre, email, telefono, mensaje))
+        
+        id_contacto = cursor.fetchone()[0]
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': '¡Mensaje enviado exitosamente! Te contactaremos pronto.',
+            'id_contacto': id_contacto
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error en enviar_contacto: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+
+@app.route('/admin/contactos', methods=['GET'])
+def admin_get_contactos():
+    """Lista todos los mensajes de contacto (solo admin)"""
+    try:
+        if 'usuario' not in session or session.get('rol') != 'admin':
+            return jsonify({
+                'success': False,
+                'message': 'Acceso no autorizado'
+            }), 403
+        
+        cursor = db.session.connection().connection.cursor()
+        
+        cursor.execute("""
+            SELECT 
+                id_contacto,
+                nombre,
+                email,
+                telefono,
+                mensaje,
+                fecha,
+                estado
+            FROM contacto
+            ORDER BY fecha DESC
+        """)
+        
+        results = cursor.fetchall()
+        
+        columns = ['id_contacto', 'nombre', 'email', 'telefono', 'mensaje', 'fecha', 'estado']
+        contactos = []
+        
+        for row in results:
+            contacto = dict(zip(columns, row))
+            if contacto['fecha']:
+                contacto['fecha'] = contacto['fecha'].isoformat()
+            contactos.append(contacto)
+        
+        return jsonify({
+            'success': True,
+            'contactos': contactos
+        })
+        
+    except Exception as e:
+        print(f"Error en admin_get_contactos: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+
+@app.route('/admin/contacto/<int:id>/estado', methods=['PUT'])
+def admin_update_contacto_estado(id):
+    """Actualiza el estado de un mensaje de contacto"""
+    try:
+        if 'usuario' not in session or session.get('rol') != 'admin':
+            return jsonify({
+                'success': False,
+                'message': 'Acceso no autorizado'
+            }), 403
+        
+        data = request.get_json()
+        estado = data.get('estado')
+        
+        if estado not in ['pendiente', 'leido', 'resuelto']:
+            return jsonify({
+                'success': False,
+                'message': 'Estado inválido'
+            }), 400
+        
+        cursor = db.session.connection().connection.cursor()
+        
+        cursor.execute("""
+            UPDATE contacto
+            SET estado = %s
+            WHERE id_contacto = %s
+        """, (estado, id))
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Estado actualizado exitosamente'
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error en admin_update_contacto_estado: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+
+# ========================================
 # INICIO DE LA APLICACIÓN
 # ========================================
 
