@@ -188,6 +188,96 @@
             transform: translateY(-2px);
         }
 
+
+        /* ========== BOTONES DE REDES SOCIALES ========== */
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-btn:hover::before {
+            opacity: 1;
+        }
+
+        .social-btn i {
+            font-size: 20px;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .social-btn:hover i {
+            transform: scale(1.15);
+        }
+
+        /* Facebook */
+        .social-btn.facebook {
+            background: rgba(24, 119, 242, 0.3);
+            color: #ffffff;
+        }
+
+        .social-btn.facebook:hover {
+            background: #1877f2;
+            border-color: #1877f2;
+            box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
+        }
+
+        /* WhatsApp */
+        .social-btn.whatsapp {
+            background: rgba(37, 211, 102, 0.3);
+            color: #ffffff;
+        }
+
+        .social-btn.whatsapp:hover {
+            background: #25d366;
+            border-color: #25d366;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .social-btn:active {
+            animation: pulse 0.3s ease;
+        }
         /* ========== CONTENEDOR PRINCIPAL ========== */
         .main-container {
             max-width: 1400px;
@@ -820,6 +910,16 @@
                     <span>Carrito</span>
                     <span class="cart-count" id="cartCount">0</span>
                 </button>
+                
+                <!-- Botones de Redes Sociales -->
+                <div class="social-buttons">
+                    <a href="https://www.facebook.com/tupagina" target="_blank" class="social-btn facebook" title="Síguenos en Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://wa.me/50212345678" target="_blank" class="social-btn whatsapp" title="Contáctanos por WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
                 <div class="user-info">
                     <div class="user-avatar">
                         <i class="fas fa-user"></i>
