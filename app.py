@@ -26,7 +26,7 @@ if DATABASE_URL:
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 else:
     # Desarrollo
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg://supermarket_user:93gweNrUZKgLaQeVQiVh990Rz3pJeoZp@dpg-d3njp6buibrs738felb0-a.oregon-postgres.render.com:5432/supermarket_db_rqjm'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg://supermarket_user:7q6Fe4qNgvUQr39ioKfIz8c5TgzIePlx@dpg-d49561idbo4c7388lqug-a.oregon-postgres.render.com:5432/supermarket_db_iy8w'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -1112,3 +1112,4 @@ if __name__ == '__main__':
     print("Iniciando aplicación Flask...")
     print(f"Servidor corriendo en puerto {port}")
     app.run(host='0.0.0.0', port=port, debug=False)
+
